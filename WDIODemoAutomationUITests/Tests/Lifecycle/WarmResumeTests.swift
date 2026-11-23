@@ -25,8 +25,24 @@ final class WarmResumeTests: DemoUITestCase {
     func testFormsStateSurvivesAppSwitcher() {
         let forms = FormsScreen(app: app)
         forms.open()
-        forms.enter("iOS draft")
-        XCTAssertEqual(forms.inputValue, "iOS draft", "Text did not match immediately after typing")
+        let draft = "iOS draft"
+        var expected = ""
+        let input = forms.input
+        guard input.tapWhenReady() else { return }
+        for character in draft {
+            expected.append(character)
+            input.typeText(String(character))
+            let prefix = XCTNSPredicateExpectation(
+                predicate: NSPredicate(format: "value == %@", expected),
+                object: input
+            )
+            guard XCTWaiter.wait(for: [prefix], timeout: 2) == .completed else {
+                let actual = input.value as? String ?? "<nil>"
+                XCTFail("After typing [\(character)], expected [\(expected)], got [\(actual)]")
+                return
+            }
+        }
+        XCTAssertEqual(forms.inputValue, draft, "Text did not match immediately after typing")
         forms.setSwitch(true)
 
         let lifecycle = LifecycleActions(app: app)
