@@ -53,6 +53,13 @@ jobs:
           fi
           xcrun simctl bootstatus "$SIMULATOR_UDID" -b
 
+      - name: Disable simulator password AutoFill
+        env:
+          SIMULATOR_UDID: ${{ steps.simulator.outputs.udid }}
+        run: |
+          xcrun simctl spawn "$SIMULATOR_UDID" defaults write com.apple.WebUI AutoFillPasswords -bool false
+          xcrun simctl spawn "$SIMULATOR_UDID" defaults read com.apple.WebUI AutoFillPasswords
+
       - name: Download and install WDIO demo app
         shell: bash
         env:
