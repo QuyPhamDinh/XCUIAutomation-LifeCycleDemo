@@ -5,16 +5,26 @@ This project runs XCTest and XCUIAutomation against the separately installed WDI
 ## Setup
 
 1. Open `WDIODemoAutomation.xcodeproj` in Xcode and choose an available iOS simulator (iOS 18.2 or later).
-2. Boot the simulator and install a compatible WDIO demo simulator build. The app is not included in this repository.
+2. Download the iOS simulator ZIP from [WDIO native demo app releases](https://github.com/webdriverio/native-demo-app/releases). Under a release's **Assets**, choose the file named `ios.simulator.wdio.native.app.*.zip` (not the Android APK or source code). The app is not included in this repository. Release versions can change the UI or selectors used by these tests.
+3. Extract the downloaded ZIP and locate the `.app` bundle. Replace the ZIP path with the file you downloaded:
+
+   ```bash
+   mkdir -p ~/Downloads/wdio-simulator
+   ditto -x -k ~/Downloads/ios.simulator.wdio.native.app.v2.2.0.zip ~/Downloads/wdio-simulator
+   find ~/Downloads/wdio-simulator -type d -name '*.app' -print
+   ```
+
+4. Choose a simulator ID from the first command, then boot it and install the extracted app using the path printed above:
 
    ```bash
    xcrun simctl list devices available
    xcrun simctl boot '<SIMULATOR_UDID>'
    xcrun simctl bootstatus '<SIMULATOR_UDID>' -b
-   xcrun simctl install '<SIMULATOR_UDID>' '/path/to/wdiodemoapp.app'
+   xcrun simctl install '<SIMULATOR_UDID>' '/path/to/extracted/app.app'
+   xcrun simctl get_app_container '<SIMULATOR_UDID>' org.wdiodemoapp app
    ```
 
-   Skip the boot command if the simulator is already running. Install the app on every simulator used for testing.
+   Skip the boot command if the simulator is already running. The last command verifies that the expected bundle ID is installed. Install the app on every simulator used for testing.
 
 ## Test plans and runner
 
