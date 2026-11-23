@@ -10,22 +10,7 @@ final class WarmResumeTests: DemoUITestCase {
         XCTAssertTrue(forms.isInputEmpty)
         forms.setSwitch(false)
         let draft = "Draft before switching"
-        var expected = ""
-        let input = forms.input
-        guard input.tapWhenReady() else { return }
-        for character in draft {
-            expected.append(character)
-            input.typeText(String(character))
-            let prefix = XCTNSPredicateExpectation(
-                predicate: NSPredicate(format: "value == %@", expected),
-                object: input
-            )
-            guard XCTWaiter.wait(for: [prefix], timeout: 2) == .completed else {
-                let actual = input.value as? String ?? "<nil>"
-                XCTFail("After typing [\(character)], expected [\(expected)], got [\(actual)]")
-                return
-            }
-        }
+        guard forms.input.typeTextVerifyingEachCharacter(draft) else { return }
         XCTAssertEqual(forms.inputValue, draft, "Text did not match immediately after typing")
         forms.setSwitch(true)
 
@@ -42,22 +27,7 @@ final class WarmResumeTests: DemoUITestCase {
         let forms = FormsScreen(app: app)
         forms.open()
         let draft = "iOS draft"
-        var expected = ""
-        let input = forms.input
-        guard input.tapWhenReady() else { return }
-        for character in draft {
-            expected.append(character)
-            input.typeText(String(character))
-            let prefix = XCTNSPredicateExpectation(
-                predicate: NSPredicate(format: "value == %@", expected),
-                object: input
-            )
-            guard XCTWaiter.wait(for: [prefix], timeout: 2) == .completed else {
-                let actual = input.value as? String ?? "<nil>"
-                XCTFail("After typing [\(character)], expected [\(expected)], got [\(actual)]")
-                return
-            }
-        }
+        guard forms.input.typeTextVerifyingEachCharacter(draft) else { return }
         XCTAssertEqual(forms.inputValue, draft, "Text did not match immediately after typing")
         forms.setSwitch(true)
 
