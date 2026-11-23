@@ -9,8 +9,24 @@ final class WarmResumeTests: DemoUITestCase {
         forms.open()
         XCTAssertTrue(forms.isInputEmpty)
         forms.setSwitch(false)
-        forms.enter("Draft before switching")
-        XCTAssertEqual(forms.inputValue, "Draft before switching", "Text did not match immediately after typing")
+        let draft = "Draft before switching"
+        var expected = ""
+        let input = forms.input
+        guard input.tapWhenReady() else { return }
+        for character in draft {
+            expected.append(character)
+            input.typeText(String(character))
+            let prefix = XCTNSPredicateExpectation(
+                predicate: NSPredicate(format: "value == %@", expected),
+                object: input
+            )
+            guard XCTWaiter.wait(for: [prefix], timeout: 2) == .completed else {
+                let actual = input.value as? String ?? "<nil>"
+                XCTFail("After typing [\(character)], expected [\(expected)], got [\(actual)]")
+                return
+            }
+        }
+        XCTAssertEqual(forms.inputValue, draft, "Text did not match immediately after typing")
         forms.setSwitch(true)
 
         lifecycle.sendToBackground()
