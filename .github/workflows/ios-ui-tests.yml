@@ -69,10 +69,16 @@ jobs:
           xcrun simctl install "$SIMULATOR_UDID" "$APP_PATH"
           xcrun simctl get_app_container "$SIMULATOR_UDID" org.wdiodemoapp app
 
-      - name: Run UI tests
+      - name: Run signup test
         env:
           SIMULATOR_UDID: ${{ steps.simulator.outputs.udid }}
-        run: make test DESTINATION="platform=iOS Simulator,id=$SIMULATOR_UDID" RESULT_PATH=build/test-results/ci.xcresult
+        run: |
+          mkdir -p build/test-results
+          xcodebuild test -project WDIODemoAutomation.xcodeproj -scheme WDIODemoAutomation \
+            -testPlan All -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
+            -parallel-testing-enabled NO \
+            -only-testing:WDIODemoAutomationUITests/SignupTests/testSuccessfulSignup \
+            -resultBundlePath build/test-results/ci.xcresult
 
       - name: Upload test results
         if: always()

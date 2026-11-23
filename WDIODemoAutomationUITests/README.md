@@ -61,7 +61,7 @@ Parallel testing defaults to `NO` so the run stays on the prepared simulator. To
 
 ## GitHub Actions
 
-The iOS UI tests workflow runs on pushes, pull requests, and manual dispatch from the Actions tab. It selects an available iPhone simulator on GitHub's Xcode 27 runner, downloads and installs the pinned WDIO v2.2.0 simulator release, and runs the All plan serially. The runner image and available simulator versions can change.
+The iOS UI tests workflow runs on pushes, pull requests, and manual dispatch from the Actions tab. It selects an available iPhone simulator on GitHub's Xcode 27 runner, downloads and installs the pinned WDIO v2.2.0 simulator release, and runs only `SignupTests.testSuccessfulSignup()` from the All plan. The runner image and available simulator versions can change.
 
 After a run, download the `ios-ui-test-results` artifact from the workflow summary and open its `.xcresult` bundle in Xcode. The artifact is uploaded even when tests fail, if a result bundle was produced. The App Switcher test has shown intermittent text-entry failures.
 
