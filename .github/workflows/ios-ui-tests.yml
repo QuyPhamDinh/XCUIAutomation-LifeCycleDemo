@@ -25,6 +25,7 @@ jobs:
           xcrun simctl list devices available -j > "$RUNNER_TEMP/simulators.json"
           SIMULATOR_UDID=$(python3 - "$RUNNER_TEMP/simulators.json" <<'PY'
           import json
+          import re
           import sys
 
           with open(sys.argv[1]) as f:
@@ -35,8 +36,13 @@ jobs:
                         if device.get('isAvailable') and device['name'].startswith('iPhone')]
           if not candidates:
               sys.exit('No available iPhone simulator found')
-          runtime, device = max(candidates, key=lambda item: tuple(
-              int(part) for part in item[0].rsplit('iOS-', 1)[1].split('-')))
+          def runtime_version(candidate):
+              runtime_id, _ = candidate
+              suffix = runtime_id.split('iOS-', 1)[1]
+              match = re.match(r'^(\d+(?:-\d+)*)', suffix)
+              return tuple(map(int, match.group(1).split('-'))) if match else ()
+
+          runtime, device = max(candidates, key=runtime_version)
           print(f"Selected {device['name']} ({runtime}): {device['udid']}", file=sys.stderr)
           print(device['udid'])
           PY
