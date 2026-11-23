@@ -10,6 +10,7 @@ final class WarmResumeTests: DemoUITestCase {
         XCTAssertTrue(forms.isInputEmpty)
         forms.setSwitch(false)
         forms.enter("Draft before switching")
+        XCTAssertEqual(forms.inputValue, "Draft before switching", "Text did not match immediately after typing")
         forms.setSwitch(true)
 
         lifecycle.sendToBackground()
@@ -25,6 +26,7 @@ final class WarmResumeTests: DemoUITestCase {
         let forms = FormsScreen(app: app)
         forms.open()
         forms.enter("iOS draft")
+        XCTAssertEqual(forms.inputValue, "iOS draft", "Text did not match immediately after typing")
         forms.setSwitch(true)
 
         let lifecycle = LifecycleActions(app: app)

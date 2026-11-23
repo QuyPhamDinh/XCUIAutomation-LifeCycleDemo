@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Select an available iPhone simulator
         id: simulator
@@ -76,7 +76,7 @@ jobs:
           xcrun simctl install "$SIMULATOR_UDID" "$APP_PATH"
           xcrun simctl get_app_container "$SIMULATOR_UDID" org.wdiodemoapp app
 
-      - name: Run signup test
+      - name: Run warm resume tests
         env:
           SIMULATOR_UDID: ${{ steps.simulator.outputs.udid }}
         run: |
@@ -84,12 +84,13 @@ jobs:
           xcodebuild test -project WDIODemoAutomation.xcodeproj -scheme WDIODemoAutomation \
             -testPlan All -destination "platform=iOS Simulator,id=$SIMULATOR_UDID" \
             -parallel-testing-enabled NO \
-            -only-testing:WDIODemoAutomationUITests/SignupTests/testSuccessfulSignup \
+            -only-testing:WDIODemoAutomationUITests/WarmResumeTests/testFormsStateSurvivesAppSwitcher \
+            -only-testing:WDIODemoAutomationUITests/WarmResumeTests/testFormsStateSurvivesHomeAndResume \
             -resultBundlePath build/test-results/ci.xcresult
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ios-ui-test-results
           path: build/test-results/*.xcresult
