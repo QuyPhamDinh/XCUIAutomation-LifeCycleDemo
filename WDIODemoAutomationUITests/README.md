@@ -47,7 +47,7 @@ done
 
 Each run writes a uniquely named `.xcresult` bundle under `build/test-results`, including on test failure. Open it in Xcode or use `xcrun xcresulttool`. A CI job can archive that directory; a hosted runner must first obtain and install the separately distributed app.
 
-Parallel testing defaults to `NO` so the run stays on the prepared simulator. To experiment, run `make test PARALLEL=YES` after confirming the WDIO app is available on Xcode's simulator clones and that the tests remain isolated. Xcode can schedule tests on clones; inspect the test log for the actual device. The App Switcher test uses normalized screen coordinates and an app-card accessibility label, so validate it across the selected devices and OS versions.
+Parallel testing defaults to `NO` so the run stays on the prepared simulator. To experiment with at most two parallel workers, run `make test PARALLEL=YES` after confirming the WDIO app is available on Xcode's simulator clones and that the tests remain isolated. Override the limit with `WORKERS=3` if needed. Xcode can schedule tests on clones; inspect the test log for the actual device. The App Switcher test uses normalized screen coordinates and an app-card accessibility label, so validate it across the selected devices and OS versions.
 
 ## Run a specific test
 
