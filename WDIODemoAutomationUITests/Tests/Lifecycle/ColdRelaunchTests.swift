@@ -12,7 +12,7 @@ final class ColdRelaunchTests: DemoUITestCase {
         LifecycleActions(app: app).terminateAndRelaunch()
         forms.open()
 
-        XCTAssertTrue(forms.inputValue.isEmpty || forms.inputValue == "Type something")
+        XCTAssertTrue(forms.isInputEmpty)
         XCTAssertFalse(forms.isOn)
     }
 }

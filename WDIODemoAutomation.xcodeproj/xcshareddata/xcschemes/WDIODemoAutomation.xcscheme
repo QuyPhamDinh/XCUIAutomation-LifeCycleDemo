@@ -17,7 +17,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "40B7801230B3B58A00AF19D7"
                BuildableName = "LifeCycleDemo.app"
-               ReferencedContainer = "container:LifeCycleDemo.xcodeproj">
+               ReferencedContainer = "container:WDIODemoAutomation.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -37,7 +37,7 @@
                BlueprintIdentifier = "40B7801F30B3B58D00AF19D7"
                BuildableName = "LifeCycleDemoTests.xctest"
                BlueprintName = "LifeCycleDemoTests"
-               ReferencedContainer = "container:LifeCycleDemo.xcodeproj">
+               ReferencedContainer = "container:WDIODemoAutomation.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -46,8 +46,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "40B7802930B3B58D00AF19D7"
-               BuildableName = "LifeCycleDemoUITests.xctest"
-               ReferencedContainer = "container:LifeCycleDemo.xcodeproj">
+               BuildableName = "WDIODemoAutomationUITests.xctest"
+               ReferencedContainer = "container:WDIODemoAutomation.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -69,7 +69,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "40B7801230B3B58A00AF19D7"
             BuildableName = "LifeCycleDemo.app"
-            ReferencedContainer = "container:LifeCycleDemo.xcodeproj">
+            ReferencedContainer = "container:WDIODemoAutomation.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -85,7 +85,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "40B7801230B3B58A00AF19D7"
             BuildableName = "LifeCycleDemo.app"
-            ReferencedContainer = "container:LifeCycleDemo.xcodeproj">
+            ReferencedContainer = "container:WDIODemoAutomation.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

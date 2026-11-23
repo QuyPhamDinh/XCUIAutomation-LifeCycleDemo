@@ -12,14 +12,14 @@
   },
   "files": [
     { "kind": "folder", "path": "LifeCycleDemo", "target-membership": [ "LifeCycleDemo" ] },
-    { "kind": "folder", "path": "LifeCycleDemoUITests", "target-membership": [ "LifeCycleDemoUITests" ] },
+    { "kind": "folder", "path": "WDIODemoAutomationUITests", "target-membership": [ "WDIODemoAutomationUITests" ] },
     {
       "kind": "group",
       "name": "Products",
       "children": [
         { "path": "<PRODUCTS>/LifeCycleDemo.app", "id": "40B7801330B3B58A00AF19D7", "type": "wrapper.application", "index": false },
         { "path": "<PRODUCTS>/LifeCycleDemoTests.xctest", "id": "40B7802030B3B58D00AF19D7", "type": "wrapper.cfbundle", "index": false },
-        { "path": "<PRODUCTS>/LifeCycleDemoUITests.xctest", "id": "40B7802A30B3B58D00AF19D7", "type": "wrapper.cfbundle", "index": false },
+        { "path": "<PRODUCTS>/WDIODemoAutomationUITests.xctest", "id": "40B7802A30B3B58D00AF19D7", "type": "wrapper.cfbundle", "index": false },
       ],
     },
   ],
@@ -94,9 +94,9 @@
         "TEST_HOST": "$(BUILT_PRODUCTS_DIR)/LifeCycleDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LifeCycleDemo",
       },
     }, {
-      "name": "LifeCycleDemoUITests",
+      "name": "WDIODemoAutomationUITests",
       "id": "40B7802930B3B58D00AF19D7",
-      "product": "Products/LifeCycleDemoUITests.xctest",
+      "product": "Products/WDIODemoAutomationUITests.xctest",
       "product-type": "bundle.ui-testing",
       "test-host-target": "LifeCycleDemo",
       "dependencies": [

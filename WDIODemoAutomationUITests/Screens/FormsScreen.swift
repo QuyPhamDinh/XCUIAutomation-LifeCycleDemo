@@ -24,6 +24,11 @@ struct FormsScreen {
         input.value as? String ?? ""
     }
 
+    var isInputEmpty: Bool {
+        let value = inputValue
+        return value.isEmpty || value == "Type something"
+    }
+
     var isOn: Bool {
         (toggle.value as? String) == "1"
     }
