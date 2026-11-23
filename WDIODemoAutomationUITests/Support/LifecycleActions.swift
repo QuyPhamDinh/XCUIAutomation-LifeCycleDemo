@@ -5,7 +5,7 @@ import XCUIAutomation
 struct LifecycleActions {
     let app: XCUIApplication
 
-    func sendToBackground() {
+    func sendToBackground(file: StaticString = #filePath, line: UInt = #line) {
         XCUIDevice.shared.press(.home)
         let backgrounded = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
             app.state == .runningBackground || app.state == .runningBackgroundSuspended
@@ -13,7 +13,7 @@ struct LifecycleActions {
         XCTAssertEqual(
             XCTWaiter.wait(for: [backgrounded], timeout: DemoConfiguration.timeout),
             .completed,
-            "The app did not enter the background"
+            "The app did not enter the background", file: file, line: line
         )
     }
 
@@ -28,16 +28,12 @@ struct LifecycleActions {
         start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.7)
     }
 
-    func resumeFromAppSwitcher() {
+    func resumeFromAppSwitcher(file: StaticString = #filePath, line: UInt = #line) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         let card = springboard.otherElements.matching(
             NSPredicate(format: "label CONTAINS[c] %@", "WDIO")
         ).firstMatch
-        XCTAssertTrue(
-            card.waitForExistence(timeout: DemoConfiguration.timeout),
-            "Demo app card did not appear in the App Switcher"
-        )
-        card.tap()
+        card.tapWhenReady(message: "Demo app card did not appear in the App Switcher", file: file, line: line)
     }
 
     func terminateAndRelaunch() {

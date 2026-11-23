@@ -20,17 +20,16 @@ struct LoginScreen {
         app.descendants(matching: .any)[identifier]
     }
 
-    func open() {
-        TabBar(app: app).open("Login")
-        XCTAssertTrue(element(Identifier.screen).waitForExistence(timeout: DemoConfiguration.timeout))
+    func open(file: StaticString = #filePath, line: UInt = #line) {
+        TabBar(app: app).open("Login", file: file, line: line)
+        XCTAssertTrue(element(Identifier.screen).waitForExistence(timeout: DemoConfiguration.timeout), file: file, line: line)
     }
 
-    func submit(signup: Bool) {
+    func submit(signup: Bool, file: StaticString = #filePath, line: UInt = #line) {
         element(signup ? Identifier.signupContainer : Identifier.loginContainer).tap()
         let email = app.textFields[Identifier.email]
         let password = app.secureTextFields[Identifier.password]
-        XCTAssertTrue(email.waitForExistence(timeout: DemoConfiguration.timeout))
-        email.tap()
+        guard email.tapWhenReady(file: file, line: line) else { return }
         email.typeText(DemoConfiguration.email)
         password.tap()
         password.typeText(DemoConfiguration.password)

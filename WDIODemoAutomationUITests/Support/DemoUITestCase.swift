@@ -5,12 +5,16 @@ import XCUIAutomation
 class DemoUITestCase: XCTestCase {
     var app: XCUIApplication!
 
+    var bundleIdentifier: String { DemoConfiguration.bundleIdentifier }
+    var readyElement: XCUIElement { app.buttons["Home"] }
+    var readinessFailureMessage: String { "The app did not become ready after launch." }
+
     override func setUpWithError() throws {
         continueAfterFailure = false
-        app = XCUIApplication(bundleIdentifier: DemoConfiguration.bundleIdentifier)
+        app = XCUIApplication(bundleIdentifier: bundleIdentifier)
         app.launch()
-        XCTAssertTrue(app.buttons["Home"].waitForExistence(timeout: DemoConfiguration.timeout),
-                      "The WDIO demo app did not show its tab bar. Install its iOS simulator build first.")
+        XCTAssertTrue(readyElement.waitForExistence(timeout: DemoConfiguration.timeout),
+                      readinessFailureMessage)
     }
 
     override func tearDownWithError() throws {
