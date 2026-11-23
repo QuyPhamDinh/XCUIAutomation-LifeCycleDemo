@@ -1,0 +1,25 @@
+{
+  "configurations": [
+    {
+      "id": "CE188134-1806-4A13-B776-FA4B8D4D3F10",
+      "name": "Default",
+      "options": {}
+    }
+  ],
+  "defaultOptions": {},
+  "testTargets": [
+    {
+      "target": {
+        "containerPath": "container:WDIODemoAutomation.xcodeproj",
+        "identifier": "40B7802930B3B58D00AF19D7",
+        "name": "WDIODemoAutomationUITests"
+      },
+      "parallelizable": true,
+      "selectedTests": [
+        "LoginTests",
+        "SignupTests"
+      ]
+    }
+  ],
+  "version": 1
+}

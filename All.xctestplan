@@ -1,0 +1,21 @@
+{
+  "configurations": [
+    {
+      "id": "FF3867B9-514A-45C4-9339-65A2DCFBF156",
+      "name": "Default",
+      "options": {}
+    }
+  ],
+  "defaultOptions": {},
+  "testTargets": [
+    {
+      "target": {
+        "containerPath": "container:WDIODemoAutomation.xcodeproj",
+        "identifier": "40B7802930B3B58D00AF19D7",
+        "name": "WDIODemoAutomationUITests"
+      },
+      "parallelizable": true
+    }
+  ],
+  "version": 1
+}
