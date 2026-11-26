@@ -12,7 +12,7 @@ final class ColdRelaunchTests: DemoUITestCase {
         LifecycleActions(app: app).terminateAndRelaunch()
         XCTAssertTrue(forms.open(), "Forms screen did not appear")
 
-        XCTAssertTrue(forms.isInputEmpty)
-        XCTAssertFalse(forms.isOn)
+        XCTAssertTrue(forms.isInputEmpty, "Form input should be empty after termination and relaunch")
+        XCTAssertFalse(forms.isOn, "Form switch should be off after termination and relaunch")
     }
 }
