@@ -31,9 +31,9 @@ struct LifecycleActions {
     func resumeFromAppSwitcher(file: StaticString = #filePath, line: UInt = #line) {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         let card = springboard.otherElements.matching(
-            NSPredicate(format: "label CONTAINS[c] %@", "WDIO")
+            NSPredicate(format: "label CONTAINS[c] %@", DemoConfiguration.appSwitcherLabel)
         ).firstMatch
-        card.tapWhenReady(message: "Demo app card did not appear in the App Switcher", file: file, line: line)
+        card.tapWhenReady(message: "App card matching \(DemoConfiguration.appSwitcherLabel) did not appear in the App Switcher", file: file, line: line)
     }
 
     func terminateAndRelaunch() {
