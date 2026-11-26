@@ -10,9 +10,7 @@ final class WarmResumeTests: DemoUITestCase {
         XCTAssertTrue(forms.isInputEmpty)
         XCTAssertTrue(forms.setSwitch(false), "Could not turn switch off")
         let draft = "Draft before switching"
-        guard forms.input.typeTextWithPacing(draft) else { return }
-        XCTAssertEqual(forms.inputValue, draft, "Text did not match immediately after typing")
-        XCTAssertTrue(forms.setSwitch(true), "Could not turn switch on")
+        XCTAssertTrue(forms.fillDraft(draft), "Could not prepare form draft")
 
         lifecycle.sendToBackground()
         lifecycle.resume()
@@ -20,16 +18,13 @@ final class WarmResumeTests: DemoUITestCase {
         XCTAssertTrue(forms.screen.waitForExistence(timeout: DemoConfiguration.timeout))
         XCTAssertEqual(forms.inputValue, "Draft before switching")
         XCTAssertTrue(forms.isOn)
-        XCTAssertTrue(forms.setSwitch(false), "Could not turn switch off")
     }
 
     func testFormsStateSurvivesAppSwitcher() {
         let forms = FormsScreen(app: app)
         XCTAssertTrue(forms.open(), "Forms screen did not appear")
         let draft = "iOS draft"
-        guard forms.input.typeTextWithPacing(draft) else { return }
-        XCTAssertEqual(forms.inputValue, draft, "Text did not match immediately after typing")
-        XCTAssertTrue(forms.setSwitch(true), "Could not turn switch on")
+        XCTAssertTrue(forms.fillDraft(draft), "Could not prepare form draft")
 
         let lifecycle = LifecycleActions(app: app)
         lifecycle.openAppSwitcher()

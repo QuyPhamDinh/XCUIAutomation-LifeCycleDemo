@@ -19,6 +19,11 @@ struct FormsScreen {
         input.typeText(text)
     }
 
+    func fillDraft(_ text: String, file: StaticString = #filePath, line: UInt = #line) -> Bool {
+        guard input.typeTextWithPacing(text, file: file, line: line) else { return false }
+        return setSwitch(true)
+    }
+
     var inputValue: String {
         input.value as? String ?? ""
     }
