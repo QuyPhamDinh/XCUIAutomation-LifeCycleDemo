@@ -6,7 +6,7 @@ final class LoginTests: DemoUITestCase {
     func testSuccessfulLogin() {
         let login = LoginScreen(app: app)
         login.open()
-        login.submit(signup: false)
+        login.login()
         AlertComponent(app: app).assertAndDismissAlert(title: "Success")
     }
 }

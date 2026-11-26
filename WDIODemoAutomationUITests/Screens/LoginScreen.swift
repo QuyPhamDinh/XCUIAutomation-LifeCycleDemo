@@ -25,21 +25,53 @@ struct LoginScreen {
         XCTAssertTrue(element(Identifier.screen).waitForExistence(timeout: DemoConfiguration.timeout), file: file, line: line)
     }
 
-    func submit(signup: Bool, file: StaticString = #filePath, line: UInt = #line) {
-        element(signup ? Identifier.signupContainer : Identifier.loginContainer).tap()
-        let email = app.textFields[Identifier.email]
-        let password = app.secureTextFields[Identifier.password]
-        guard email.tapWhenReady(file: file, line: line) else { return }
-        email.typeText(DemoConfiguration.email)
-        password.tap()
-        password.typeText(DemoConfiguration.password)
-        if signup {
-            let repeatPassword = app.secureTextFields[Identifier.repeatPassword]
-            repeatPassword.tap()
-            repeatPassword.typeText(DemoConfiguration.password)
+    func login(
+        email: String? = nil,
+        password: String? = nil,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        element(Identifier.loginContainer).tap()
+        guard enterCredentials(email: email ?? DemoConfiguration.email,
+                               password: password ?? DemoConfiguration.password,
+                               file: file, line: line) else { return }
+        submitButton(Identifier.loginButton)
+    }
+
+    func signUp(
+        email: String,
+        password: String,
+        confirm: String,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        element(Identifier.signupContainer).tap()
+        guard enterCredentials(email: email, password: password, file: file, line: line) else { return }
+        let repeatPassword = app.secureTextFields[Identifier.repeatPassword]
+        repeatPassword.tap()
+        if !confirm.isEmpty {
+            repeatPassword.typeText(confirm)
         }
+        submitButton(Identifier.signupButton)
+    }
+
+    private func enterCredentials(email: String, password: String, file: StaticString, line: UInt) -> Bool {
+        let emailField = app.textFields[Identifier.email]
+        let passwordField = app.secureTextFields[Identifier.password]
+        guard emailField.tapWhenReady(file: file, line: line) else { return false }
+        if !email.isEmpty {
+            emailField.typeText(email)
+        }
+        passwordField.tap()
+        if !password.isEmpty {
+            passwordField.typeText(password)
+        }
+        return true
+    }
+
+    private func submitButton(_ identifier: String) {
         element(Identifier.screen).tap()
-        let submit = element(signup ? Identifier.signupButton : Identifier.loginButton)
+        let submit = element(identifier)
         if !submit.isHittable {
             element(Identifier.screen).swipeUp()
         }
