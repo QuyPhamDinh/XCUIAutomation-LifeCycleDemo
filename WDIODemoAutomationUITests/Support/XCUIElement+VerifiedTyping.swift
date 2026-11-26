@@ -3,9 +3,9 @@ import XCUIAutomation
 
 @MainActor
 extension XCUIElement {
-    /// Types into an empty, non-secure text field and verifies each accumulated prefix.
+    /// Paces input into an empty, non-secure text field by verifying each prefix.
     @discardableResult
-    func typeTextVerifyingEachCharacter(
+    func typeTextWithPacing(
         _ text: String,
         timeoutPerCharacter: TimeInterval = 2,
         file: StaticString = #filePath,
