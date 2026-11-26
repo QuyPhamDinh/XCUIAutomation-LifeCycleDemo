@@ -31,11 +31,11 @@ struct LoginScreen {
         file: StaticString = #filePath,
         line: UInt = #line
     ) {
-        element(Identifier.loginContainer).tap()
+        guard element(Identifier.loginContainer).tapWhenReady(file: file, line: line) else { return }
         guard enterCredentials(email: email ?? DemoConfiguration.email,
                                password: password ?? DemoConfiguration.password,
                                file: file, line: line) else { return }
-        submitButton(Identifier.loginButton)
+        submitButton(Identifier.loginButton, file: file, line: line)
     }
 
     func signUp(
@@ -45,14 +45,14 @@ struct LoginScreen {
         file: StaticString = #filePath,
         line: UInt = #line
     ) {
-        element(Identifier.signupContainer).tap()
+        guard element(Identifier.signupContainer).tapWhenReady(file: file, line: line) else { return }
         guard enterCredentials(email: email, password: password, file: file, line: line) else { return }
         let repeatPassword = app.secureTextFields[Identifier.repeatPassword]
-        repeatPassword.tap()
+        guard repeatPassword.tapWhenReady(file: file, line: line) else { return }
         if !confirm.isEmpty {
             repeatPassword.typeText(confirm)
         }
-        submitButton(Identifier.signupButton)
+        submitButton(Identifier.signupButton, file: file, line: line)
     }
 
     private func enterCredentials(email: String, password: String, file: StaticString, line: UInt) -> Bool {
@@ -62,18 +62,31 @@ struct LoginScreen {
         if !email.isEmpty {
             emailField.typeText(email)
         }
-        passwordField.tap()
+        guard passwordField.tapWhenReady(file: file, line: line) else { return false }
         if !password.isEmpty {
             passwordField.typeText(password)
         }
         return true
     }
 
-    private func submitButton(_ identifier: String) {
-        element(Identifier.screen).tap()
+    private func submitButton(_ identifier: String, file: StaticString, line: UInt) {
         let submit = element(identifier)
-        if !submit.isHittable {
+        guard submit.waitForExistence(timeout: DemoConfiguration.timeout) else {
+            XCTFail("Submit button did not appear: \(identifier)", file: file, line: line)
+            return
+        }
+
+        for _ in 0..<4 {
+            if submit.isHittable {
+                submit.tap()
+                return
+            }
             element(Identifier.screen).swipeUp()
+        }
+
+        guard submit.isHittable else {
+            XCTFail("Submit button was not reachable: \(identifier)", file: file, line: line)
+            return
         }
         submit.tap()
     }
