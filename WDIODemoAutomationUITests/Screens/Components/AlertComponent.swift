@@ -5,11 +5,18 @@ import XCUIAutomation
 struct AlertComponent {
     let app: XCUIApplication
 
-    func assertAndDismissAlert(title: String, file: StaticString = #filePath, line: UInt = #line) {
-        let alert = app.alerts.firstMatch
-        XCTAssertTrue(alert.waitForExistence(timeout: DemoConfiguration.timeout), file: file, line: line)
-        XCTAssertTrue(alert.label.contains(title), "Expected alert containing: \(title); got: \(alert.label)", file: file, line: line)
+    var alert: XCUIElement { app.alerts.firstMatch }
+    var title: String { alert.label }
+
+    func waitForExistence() -> Bool {
+        alert.waitForExistence(timeout: DemoConfiguration.timeout)
+    }
+
+    func dismiss() {
         alert.buttons["OK"].tap()
-        XCTAssertTrue(alert.waitForNonExistence(timeout: DemoConfiguration.timeout), file: file, line: line)
+    }
+
+    func waitForDismissal() -> Bool {
+        alert.waitForNonExistence(timeout: DemoConfiguration.timeout)
     }
 }

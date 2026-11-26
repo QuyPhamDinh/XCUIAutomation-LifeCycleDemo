@@ -5,8 +5,12 @@ import XCUIAutomation
 final class LoginTests: DemoUITestCase {
     func testSuccessfulLogin() {
         let login = LoginScreen(app: app)
-        login.open()
+        XCTAssertTrue(login.open(), "Login screen did not appear")
         login.login()
-        AlertComponent(app: app).assertAndDismissAlert(title: "Success")
+        let alert = AlertComponent(app: app)
+        XCTAssertTrue(alert.waitForExistence(), "Expected alert did not appear")
+        XCTAssertTrue(alert.title.contains("Success"), "Unexpected alert: \(alert.title)")
+        alert.dismiss()
+        XCTAssertTrue(alert.waitForDismissal(), "Alert did not dismiss")
     }
 }

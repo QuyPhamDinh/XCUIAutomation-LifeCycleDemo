@@ -5,12 +5,12 @@ import XCUIAutomation
 final class ColdRelaunchTests: DemoUITestCase {
     func testFormsStateClearsAfterTermination() {
         let forms = FormsScreen(app: app)
-        forms.open()
+        XCTAssertTrue(forms.open(), "Forms screen did not appear")
         forms.enter("Draft before kill")
-        forms.setSwitch(true)
+        XCTAssertTrue(forms.setSwitch(true), "Could not turn switch on")
 
         LifecycleActions(app: app).terminateAndRelaunch()
-        forms.open()
+        XCTAssertTrue(forms.open(), "Forms screen did not appear")
 
         XCTAssertTrue(forms.isInputEmpty)
         XCTAssertFalse(forms.isOn)

@@ -9,9 +9,9 @@ struct FormsScreen {
     var input: XCUIElement { app.textFields["text-input"] }
     var toggle: XCUIElement { app.switches["switch"] }
 
-    func open(file: StaticString = #filePath, line: UInt = #line) {
+    func open(file: StaticString = #filePath, line: UInt = #line) -> Bool {
         TabBar(app: app).open("Forms", file: file, line: line)
-        XCTAssertTrue(screen.waitForExistence(timeout: DemoConfiguration.timeout), "Forms screen did not appear", file: file, line: line)
+        return screen.waitForExistence(timeout: DemoConfiguration.timeout)
     }
 
     func enter(_ text: String, file: StaticString = #filePath, line: UInt = #line) {
@@ -32,11 +32,11 @@ struct FormsScreen {
         (toggle.value as? String) == "1"
     }
 
-    func setSwitch(_ on: Bool, file: StaticString = #filePath, line: UInt = #line) {
-        XCTAssertTrue(toggle.waitForExistence(timeout: DemoConfiguration.timeout), file: file, line: line)
+    func setSwitch(_ on: Bool) -> Bool {
+        guard toggle.waitForExistence(timeout: DemoConfiguration.timeout) else { return false }
         if isOn != on {
             toggle.tap()
         }
-        XCTAssertEqual(isOn, on, file: file, line: line)
+        return isOn == on
     }
 }

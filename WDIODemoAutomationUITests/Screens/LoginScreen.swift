@@ -20,9 +20,9 @@ struct LoginScreen {
         app.descendants(matching: .any)[identifier]
     }
 
-    func open(file: StaticString = #filePath, line: UInt = #line) {
+    func open(file: StaticString = #filePath, line: UInt = #line) -> Bool {
         TabBar(app: app).open("Login", file: file, line: line)
-        XCTAssertTrue(element(Identifier.screen).waitForExistence(timeout: DemoConfiguration.timeout), file: file, line: line)
+        return element(Identifier.screen).waitForExistence(timeout: DemoConfiguration.timeout)
     }
 
     func login(
