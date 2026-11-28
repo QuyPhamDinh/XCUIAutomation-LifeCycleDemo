@@ -6,7 +6,7 @@ final class ColdRelaunchTests: DemoUITestCase {
     func testFormsStateClearsAfterTermination() {
         let forms = FormsScreen(app: app)
         XCTAssertTrue(forms.open(), "Forms screen did not appear")
-        forms.enter("Draft before kill")
+        XCTAssertTrue(forms.enter("Draft before kill"), "Could not enter form draft")
         XCTAssertTrue(forms.setSwitch(true), "Could not turn switch on")
 
         LifecycleActions(app: app).terminateAndRelaunch()

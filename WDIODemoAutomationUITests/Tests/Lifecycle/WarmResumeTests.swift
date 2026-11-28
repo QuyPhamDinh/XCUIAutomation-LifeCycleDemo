@@ -12,7 +12,7 @@ final class WarmResumeTests: DemoUITestCase {
         let draft = "Draft before switching"
         XCTAssertTrue(forms.fillDraft(draft), "Could not prepare form draft")
 
-        lifecycle.sendToBackground()
+        XCTAssertTrue(lifecycle.sendToBackground(), "App did not enter background")
         lifecycle.resume()
 
         XCTAssertTrue(forms.screen.waitForExistence(timeout: DemoConfiguration.timeout))
@@ -28,7 +28,7 @@ final class WarmResumeTests: DemoUITestCase {
 
         let lifecycle = LifecycleActions(app: app)
         lifecycle.openAppSwitcher()
-        lifecycle.resumeFromAppSwitcher()
+        XCTAssertTrue(lifecycle.resumeFromAppSwitcher(), "Could not resume from App Switcher")
 
         XCTAssertTrue(forms.screen.waitForExistence(timeout: DemoConfiguration.timeout))
         XCTAssertEqual(forms.inputValue, "iOS draft")
