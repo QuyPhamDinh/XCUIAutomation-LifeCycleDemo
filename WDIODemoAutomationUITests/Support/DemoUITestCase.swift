@@ -6,7 +6,7 @@ class DemoUITestCase: XCTestCase {
     var app: XCUIApplication!
 
     var bundleIdentifier: String { DemoConfiguration.bundleIdentifier }
-    var readyElement: XCUIElement { app.buttons["Home"] }
+    var readyElement: XCUIElement { TabBar(app: app).element(for: .home) }
     var readinessFailureMessage: String { "The app did not become ready after launch." }
 
     override func setUpWithError() throws {

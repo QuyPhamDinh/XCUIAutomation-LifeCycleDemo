@@ -1,8 +1,6 @@
-import XCTest
-import XCUIAutomation
+import Foundation
 
-@MainActor
-enum DemoConfiguration {
+nonisolated enum DemoConfiguration {
     static let bundleIdentifier = "org.wdiodemoapp"
     static let appSwitcherLabel = "WDIO"
     static let timeout: TimeInterval = 15

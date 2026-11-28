@@ -5,16 +5,18 @@ import XCUIAutomation
 struct LifecycleActions {
     let app: XCUIApplication
 
-    func sendToBackground(file: StaticString = #filePath, line: UInt = #line) {
+    @discardableResult
+    func sendToBackground(file: StaticString = #filePath, line: UInt = #line) -> Bool {
         XCUIDevice.shared.press(.home)
         let backgrounded = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
             app.state == .runningBackground || app.state == .runningBackgroundSuspended
         }, object: nil)
-        XCTAssertEqual(
-            XCTWaiter.wait(for: [backgrounded], timeout: DemoConfiguration.timeout),
-            .completed,
-            "The app did not enter the background", file: file, line: line
-        )
+        let result = XCTWaiter.wait(for: [backgrounded], timeout: DemoConfiguration.timeout)
+        if result != .completed {
+            XCTFail("The app did not enter the background", file: file, line: line)
+            return false
+        }
+        return true
     }
 
     func resume() {
@@ -28,12 +30,17 @@ struct LifecycleActions {
         start.press(forDuration: 0.1, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.7)
     }
 
-    func resumeFromAppSwitcher(file: StaticString = #filePath, line: UInt = #line) {
+    @discardableResult
+    func resumeFromAppSwitcher(file: StaticString = #filePath, line: UInt = #line) -> Bool {
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         let card = springboard.otherElements.matching(
             NSPredicate(format: "label CONTAINS[c] %@", DemoConfiguration.appSwitcherLabel)
         ).firstMatch
-        card.tapWhenReady(message: "App card matching \(DemoConfiguration.appSwitcherLabel) did not appear in the App Switcher", file: file, line: line)
+        return card.tapWhenReady(
+            message: "App card matching \(DemoConfiguration.appSwitcherLabel) did not appear in the App Switcher",
+            file: file,
+            line: line
+        )
     }
 
     func terminateAndRelaunch() {

@@ -3,25 +3,34 @@ import XCUIAutomation
 
 @MainActor
 struct FormsScreen {
+    private enum Identifier {
+        static let screen = "Forms-screen"
+        static let textInput = "text-input"
+        static let toggle = "switch"
+    }
+
     let app: XCUIApplication
 
-    var screen: XCUIElement { app.descendants(matching: .any)["Forms-screen"] }
-    var input: XCUIElement { app.textFields["text-input"] }
-    var toggle: XCUIElement { app.switches["switch"] }
+    var screen: XCUIElement { app.descendants(matching: .any)[Identifier.screen] }
+    var input: XCUIElement { app.textFields[Identifier.textInput] }
+    var toggle: XCUIElement { app.switches[Identifier.toggle] }
 
     func open(file: StaticString = #filePath, line: UInt = #line) -> Bool {
-        TabBar(app: app).open("Forms", file: file, line: line)
+        guard TabBar(app: app).open(.forms, file: file, line: line) else { return false }
         return screen.waitForExistence(timeout: DemoConfiguration.timeout)
     }
 
-    func enter(_ text: String, file: StaticString = #filePath, line: UInt = #line) {
-        guard input.tapWhenReady(file: file, line: line) else { return }
+    @discardableResult
+    func enter(_ text: String, file: StaticString = #filePath, line: UInt = #line) -> Bool {
+        guard input.tapWhenReady(file: file, line: line) else { return false }
         input.typeText(text)
+        return true
     }
 
+    @discardableResult
     func fillDraft(_ text: String, file: StaticString = #filePath, line: UInt = #line) -> Bool {
         guard input.typeTextWithPacing(text, file: file, line: line) else { return false }
-        return setSwitch(true)
+        return setSwitch(true, file: file, line: line)
     }
 
     var inputValue: String {
@@ -37,8 +46,12 @@ struct FormsScreen {
         (toggle.value as? String) == "1"
     }
 
-    func setSwitch(_ on: Bool) -> Bool {
-        guard toggle.waitForExistence(timeout: DemoConfiguration.timeout) else { return false }
+    @discardableResult
+    func setSwitch(_ on: Bool, file: StaticString = #filePath, line: UInt = #line) -> Bool {
+        guard toggle.waitForHittable(timeout: DemoConfiguration.timeout) else {
+            XCTFail("Switch did not become hittable", file: file, line: line)
+            return false
+        }
         if isOn != on {
             toggle.tap()
         }
